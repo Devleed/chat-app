@@ -1,0 +1,9 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "a basic chat app",
+  "main": "index.js",
+  "repository": "https://github.com/Waleed-Not-The-Greatest/chat-app.git",
+  "author": "waleed and bilal",
+  "license": "MIT"
+}
