@@ -20,7 +20,7 @@ router.get(
  * google kick callback on this route and then we handle on our server
  */
 router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-  res.redirect('/');
+  res.send(req.user);
 });
 
 /**
