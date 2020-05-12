@@ -1,48 +1,68 @@
 const express = require('express');
 const passport = require('passport');
-const router = express.Router();
 const path = require('path');
+const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 router.use(express.json());
+
+const generateError = (res, status, msg) => {
+  return res.status(status).json({ msg });
+};
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../static/auth.html'));
 });
 
-/**
- * Auth route - /auth/google
- * requests google to sign in user
- */
 router.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  })
+  '/current_user',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return generateError(res, 401, 'Unauthorized');
+    res.json({ user });
+  }
 );
 
-/**
- * Auth callback route - /auth/google/callback
- * google kick callback on this route and then we handle on our server
- */
-router.get('/google/callback', passport.authenticate('google'), (req, res) => {
-  res.json({ user: req.user });
-});
+router.post(
+  '/register',
+  passport.authenticate('register', {
+    session: false
+  }),
+  (req, res) => {
+    jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, (err, token) => {
+      if (err) return generateError(res, 400, 'server error, try again later');
+      res.json({
+        token: `Bearer ${token}`,
+        user: {
+          id: req.user.id,
+          name: req.user.name,
+          email: req.user.email
+        }
+      });
+    });
+  }
+);
 
-/**
- * Logout route - /auth/logout
- * logs out user
- */
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
-
-/**
- * fetch route - /current_user
- * fetches logged in user
- */
-router.get('/current_user', (req, res) => {
-  res.send(req.user);
-});
+router.post(
+  '/login',
+  passport.authenticate('login', {
+    session: false
+  }),
+  (req, res) => {
+    jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, (err, token) => {
+      if (err) return generateError(res, 500, 'server error, try again later');
+      res.json({
+        token: `Bearer ${token}`,
+        user: {
+          id: req.user.id,
+          name: req.user.name,
+          email: req.user.email
+        }
+      });
+    });
+  }
+);
 
 module.exports = router;

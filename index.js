@@ -22,19 +22,18 @@ const server = app.listen(port, () => console.log(`listening on port ${port}`));
 const io = socketio(server);
 require('./helpers/socketManager')(io);
 
-// requiring services
-require('./services/passport');
-
 // middlewares
 app.use(express.json());
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000,
     keys: [process.env.COOKIE_KEY]
   })
 );
+
+// requiring services
+require('./services/passport')(passport);
 
 // setting routes
 app.use('/auth', require('./routes/auth'));
