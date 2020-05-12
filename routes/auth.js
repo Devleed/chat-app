@@ -1,8 +1,13 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
+const path = require('path');
 
 router.use(express.json());
+
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../static/auth.html'));
+});
 
 /**
  * Auth route - /auth/google

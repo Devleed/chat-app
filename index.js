@@ -39,6 +39,7 @@ app.use(
 // setting routes
 app.use('/auth', require('./routes/auth'));
 app.use('/message', require('./routes/message'));
+app.use('/user', require('./routes/user'));
 
 // mongodb setup
 mongoose
@@ -51,15 +52,15 @@ mongoose
   .then(() => console.log('database connected'))
   .catch(e => console.log(`error => ${e}`));
 
-// checking th environment
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
 // test route
 app.get('/', (req, res) => {
-  res.send('psshhh..!!');
+  res.sendFile(path.join(__dirname, './static/base.html'));
 });
+
+// checking th environment
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static('client/build'));
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//   });
+// }
