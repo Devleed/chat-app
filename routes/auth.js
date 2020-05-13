@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const util = require('util');
 const verifyToken = require('../middlewares/verifyToken');
+const validator = require('../middlewares/validator');
 
 const router = express.Router();
 
@@ -35,13 +36,9 @@ router.get('/current_user', verifyToken, async (req, res) => {
   res.json(req.user);
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', validator, async (req, res) => {
   // necessary stuff
   const { name, email, password } = req.body;
-
-  if (!email && !name && !password) {
-    return res.status(403).json({ msg: 'please enter required fields' });
-  }
 
   try {
     // check if that email is taken
@@ -77,7 +74,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', validator, async (req, res) => {
   try {
     // necessary stuff
     const { email, password } = req.body;
