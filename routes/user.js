@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
 const path = require('path');
 
@@ -15,29 +14,6 @@ router.get('/', (req, res) => {
  * User route - /user/update/username
  * updates logged in user's username
  */
-router.post(
-  '/update/username',
-  passport.authenticate(
-    'google',
-    {
-      scope: ['profile', 'email']
-    },
-    async (req, res) => {
-      try {
-        const user = await User.findByIdAndUpdate(
-          req.user.id,
-          {
-            $set: { username: req.body.username }
-          },
-          { new: true }
-        );
-
-        res.json(user);
-      } catch (err) {
-        res.status(500).json({ message: `an error occured => ${err}` });
-      }
-    }
-  )
-);
+router.post('/update/username', async (req, res) => {});
 
 module.exports = router;
