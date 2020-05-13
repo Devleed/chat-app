@@ -39,6 +39,14 @@ router.post('/register', async (req, res) => {
   // necessary stuff
   const { name, email, password } = req.body;
 
+  if (!email) {
+    return res.send.json({ msg: 'email is required ' });
+  } else if (!name) {
+    return res.send.json({ msg: 'name is required ' });
+  } else if (!password) {
+    return res.send.json({ msg: 'password is required ' });
+  }
+
   try {
     // check if that email is taken
     const existingUser = await User.findOne({ email });
