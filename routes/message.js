@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authenticateUser = require('../middlewares/authenticateUser');
+const verifyToken = require('../middlewares/verifyToken');
 
 // require desired models
 const Message = require('../models/Message');
@@ -14,7 +14,7 @@ const getConditionQuery = id => ({ $eq: ['$sender', id] });
  * get messages route - /message
  * gets newly recieved messages for required user
  */
-router.get('/', authenticateUser, async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
   try {
     const messages = await Message.aggregate([
       {

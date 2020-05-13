@@ -1,7 +1,5 @@
 const express = require('express');
 const path = require('path');
-const cookieSession = require('cookie-session');
-const passport = require('passport');
 const mongoose = require('mongoose');
 const socketio = require('socket.io');
 
@@ -24,16 +22,6 @@ require('./helpers/socketManager')(io);
 
 // middlewares
 app.use(express.json());
-app.use(passport.initialize());
-app.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [process.env.COOKIE_KEY]
-  })
-);
-
-// requiring services
-require('./services/passport')(passport);
 
 // setting routes
 app.use('/auth', require('./routes/auth'));
