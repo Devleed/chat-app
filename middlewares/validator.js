@@ -3,4 +3,5 @@ module.exports = async (req, res, next) => {
   if (!email && !name && !password) {
     res.status(403).json({ msg: 'please enter required fields' });
   }
+  next();
 };
