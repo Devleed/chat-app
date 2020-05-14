@@ -24,7 +24,7 @@ const generateToken = async id => {
     const token = await jwt.sign({ id }, process.env.JWT_SECRET);
     return token;
   } catch (err) {
-    generateError(res, 400, 'server error, try again later');
+    return err
   }
 };
 
