@@ -30,10 +30,10 @@ router.post('/update/avatar', verifyToken, async (req, res) => {
     );
     // save the url
     req.user.avatar = url;
-    await req.user.save();
+    const user = await req.user.save();
 
     // send response
-    res.json(req.user.avatar);
+    res.json(user.avatar);
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'server error' });

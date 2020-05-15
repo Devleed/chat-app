@@ -28,7 +28,7 @@ const server = app.listen(port, () => console.log(`listening on port ${port}`));
 
 // setting up socket io
 const io = socketio(server);
-require('./helpers/socketManager')(io);
+require('./helpers/socketio/socketManager')(io);
 
 // middlewares
 app.use(express.json());
