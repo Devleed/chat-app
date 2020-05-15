@@ -20,7 +20,10 @@ const userSchema = new Schema({
     required: true,
     default: Date.now()
   },
-  avatar: String
+  avatar: {
+    type: String,
+    default: 'https://vectorified.com/images/empty-profile-picture-icon-14.png'
+  }
 });
 
 module.exports = User = mongoose.model('user', userSchema);

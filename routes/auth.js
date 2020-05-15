@@ -24,7 +24,7 @@ const generateToken = async id => {
     const token = await jwt.sign({ id }, process.env.JWT_SECRET);
     return token;
   } catch (err) {
-    return err
+    return err;
   }
 };
 
@@ -66,7 +66,8 @@ router.post('/register', validator, async (req, res) => {
       user: {
         id: user.id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        avatar: user.avatar
       }
     });
   } catch (err) {
@@ -99,7 +100,8 @@ router.post('/login', validator, async (req, res) => {
       user: {
         id: user.id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        avatar: user.avatar
       }
     });
   } catch (err) {
